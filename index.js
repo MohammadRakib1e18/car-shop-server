@@ -54,6 +54,32 @@ async function run() {
             console.log(result);
             res.json({ result });
         });
+
+        // GET for review
+        app.get("/review", async (req, res) => {
+            const cursor = reviewCollection.find({});
+            const reviews = await cursor.toArray();
+            console.log(reviews);
+            res.send(reviews);
+        });
+
+        // save user
+        const userCollection = database.collection('users');
+        // POST
+        app.post('/users', async(req, res)=>{
+            const user = req.body;
+            const result = await userCollection.insertOne(user);
+            console.log(result);
+            res.json(result);
+        })
+
+        app.put('/users/admin', async(req, res)=>{
+            const user = req.body;
+            const filter = {email: user.email};
+            const updateDoc = {$set:{role:'admin'}};
+            const result = await userCollection.updateOne(filter, updateDoc);
+            res.json(result);
+        })
     } finally {
         // await client.close();
     }
