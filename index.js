@@ -28,6 +28,8 @@ async function run() {
         });
 
         const orderCollection = database.collection("order");
+        
+
         // POST API
         app.post("/order", async (req, res) => {
             const order = req.body;
@@ -35,6 +37,14 @@ async function run() {
             console.log(result);
             res.json({ result });
         });
+        app.get('/order', async(req, res)=>{
+            const email = req.query.email;
+            const query = {email: email}
+            console.log(query);
+            const cursor = orderCollection.find(query);
+            const getOrders = await cursor.toArray();
+            res.send(getOrders);
+        })
     } finally {
         // await client.close();
     }
