@@ -54,6 +54,12 @@ async function run() {
             console.log(result);
             res.json({ result });
         });
+        app.post("/productAdded", async (req, res) => {
+            const product = req.body;
+            const result = await productCollection.insertOne(product);
+            console.log(result);
+            res.json({ result });
+        });
 
         // GET for review
         app.get("/review", async (req, res) => {
